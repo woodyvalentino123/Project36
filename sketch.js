@@ -2,7 +2,7 @@
 var doghungry, happyDog,database,foods,foodStock;
 var img1,img2;
 var lastFed,milk;
-var time,Gamestate;
+var time,gameState;
 var button1,button2;
 var happyD,hungryD;
 var getFoodStock;
@@ -32,7 +32,7 @@ function setup() {
   getFoodStock.on("value",readStock,showerror);
   getGameState = database.ref('gameState');
   getGameState.on("value",function(data){
-    Gamestate = data.val();
+    gameState = data.val();
   })
 
   foodobj = new Food();
@@ -82,6 +82,16 @@ if(currentTime===(lastFed+1)){
   update("Hungry")
   foodobj.display();
 }
+
+if (gameState!=="Hungry"){
+  button1.hide();
+  button2.hide();
+  doghungry.remove();
+}else{
+  button1.show();
+  button2.show();
+  doghungry.addImage(hungryD);
+}
    
   drawSprites();
    
@@ -122,5 +132,10 @@ function addFoods(){
   database.ref("/").update({
     Food:foodS
   })
+}
+function udate(state){
+  database.ref('/').update({
+    gameState:state
+  });
 }
  
