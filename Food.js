@@ -30,6 +30,9 @@ class Food {
         getFoodStock(){
             return this.foodStock;
         }
+        happy(){
+            background(livingroom,550,500);
+        }
     bedroom(){
         background(bedroom1,550,500);
     }

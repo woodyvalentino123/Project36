@@ -6,7 +6,8 @@ var time,gameState;
 var button1,button2;
 var happyD,hungryD;
 var getFoodStock;
-var bedroom, bedroom1, garden, garden1, washroom, washroom1;
+var bedroom, bedroom1, garden, garden1, washroom, washroom1,currentTime;
+
 function preload()
 {
  
@@ -16,6 +17,7 @@ function preload()
   bedroom1 = loadImage("images/Bed Room.png");
   garden1 = loadImage("images/Garden.png");
   washroom1 = loadImage("images/Wash Room.png");
+  livingroom = loadImage("images/Living Room.png")
   
 }
 
@@ -35,8 +37,7 @@ function setup() {
     gameState = data.val();
   })
 
-  foodobj = new Food();
-
+    
   button1 = createButton('Feed the Dog');
   button2 = createButton('Add the Food');
 
@@ -45,13 +46,15 @@ function setup() {
 
   button1.mousePressed(feedDog);
   button2.mousePressed(addFoods)
+   foodobj = new Food();
+
   
   }
 
 
 function draw() {  
   background(46,139,87);
-  foodobj.display();
+  //foodobj.display();
   var feedTime = database.ref('FeedTime');
   feedTime.on("value",function (data){
    lastFed = data.val();
@@ -60,7 +63,7 @@ function draw() {
   
  fill(225);
  textSize(15);
-if(lastFed>12) {
+if(lastFed>=12) {
   text("Last Fed :" + lastFed%12 + "PM",350,30)
 } 
 else if (lastFed === 0){
@@ -68,8 +71,11 @@ else if (lastFed === 0){
 }else {
   text("Last Fed : "+ lastFed + "AM",350,30);
 }
-var currentTime = hour();
-console.log(currentTime);
+currentTime = hour();
+if(currentTime===lastFed){
+  update("happy");
+  foodobj.happy();
+}
 if(currentTime===(lastFed+1)){
   update("playing");
   foodObj.garden();
@@ -80,7 +86,7 @@ if(currentTime===(lastFed+1)){
 }else if (currentTime>(lastFed+2)&& currentTime<=(lastFed+4)){
   foodobj.washroom();
 }else{
-  update("Hungry")
+ 
   foodobj.display();
 }
 
