@@ -60,7 +60,7 @@ function draw() {
   
  fill(225);
  textSize(15);
-if(lastFed>=12) {
+if(lastFed>12) {
   text("Last Fed :" + lastFed%12 + "PM",350,30)
 } 
 else if (lastFed === 0){
@@ -68,7 +68,8 @@ else if (lastFed === 0){
 }else {
   text("Last Fed : "+ lastFed + "AM",350,30);
 }
-currentTime = hour();
+var currentTime = hour();
+console.log(currentTime);
 if(currentTime===(lastFed+1)){
   update("playing");
   foodObj.garden();
@@ -76,7 +77,7 @@ if(currentTime===(lastFed+1)){
 }else if(currentTime ===(lastFed+2)){
   update("sleeping");
   foodobj.bedroom();
-}else if (currentTime>(lastFed+2)&& currenTime<=(lastFed+4)){
+}else if (currentTime>(lastFed+2)&& currentTime<=(lastFed+4)){
   foodobj.washroom();
 }else{
   update("Hungry")
@@ -133,7 +134,7 @@ function addFoods(){
     Food:foodS
   })
 }
-function udate(state){
+function update(state){
   database.ref('/').update({
     gameState:state
   });
